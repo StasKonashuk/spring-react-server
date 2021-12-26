@@ -10,20 +10,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/projects', (req, res) => {
-  try {
-    res.json(projectsInfo);
-  } catch {
-    res.status(500).send();
-  }
-});
-
 app.post('/login', async (req, res) => {
   const user = {
-    userNname: 'admin',
+    userName: 'admin',
     password: '1234'
   };
-  if (user.userNname !== req.body.userName) {
+  if (user.userName !== req.body.userName) {
     return res.status(401).send('Invalid username or password');
   }
   try {
@@ -32,6 +24,14 @@ app.post('/login', async (req, res) => {
     } else {
       res.status(401).send('Invalid username or password');
     }
+  } catch {
+    res.status(500).send();
+  }
+});
+
+app.get('/projects', (req, res) => {
+  try {
+    res.json(projectsInfo);
   } catch {
     res.status(500).send();
   }
