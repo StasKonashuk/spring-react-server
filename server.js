@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const projectsInfo = require('./projects');
+const rootRouter = require('./routes');
 
 const PORT = process.env.PORT || 5000;
 
@@ -9,32 +9,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-app.post('/login', async (req, res) => {
-  const user = {
-    userName: 'admin',
-    password: '1234'
-  };
-  if (user.userName !== req.body.userName) {
-    return res.status(401).send('Invalid username or password');
-  }
-  try {
-    if (user.password === req.body.password) {
-      res.send('Success');
-    } else {
-      res.status(401).send('Invalid username or password');
-    }
-  } catch {
-    res.status(500).send();
-  }
-});
-
-app.get('/projects', (req, res) => {
-  try {
-    res.json(projectsInfo);
-  } catch {
-    res.status(500).send();
-  }
-});
+app.use('/', rootRouter);
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
