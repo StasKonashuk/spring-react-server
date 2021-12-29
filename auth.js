@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
+router.post('/', (req, res) => {
   const user = {
     userName: 'admin',
     password: '1234'

@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const projectsInfo = require('./projectsData');
 
-router.get('/projects', (req, res) => {
+router.get('/', (req, res) => {
   try {
     res.json(projectsInfo);
   } catch {
