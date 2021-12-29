@@ -1,0 +1,31 @@
+{
+  "name": "spring-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "lint": "eslint *.js",
+    "lint-fix": "eslint *.js --fix",
+    "prepare": "husky install"
+  },
+  "author": "Stanislav Konashuk <skonashuk@list.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.4",
+    "nodemon": "^2.0.15"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  }
+}
