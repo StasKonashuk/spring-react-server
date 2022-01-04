@@ -37,7 +37,7 @@ class AuthController {
         errors.lastNameError.push('Last name must contain 3 symbols or more.');
       }
       if (repeatPassword !== password) {
-        errors.repeatPasswordError.push('Passwords should be sam.e');
+        errors.repeatPasswordError.push('Passwords should be same.');
       }
       if (isNaN(age) === true) {
         errors.ageError.push('Age must be a number.');
