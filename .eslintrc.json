@@ -12,6 +12,12 @@
     "linebreak-style": "off",
     "consistent-return": "off",
     "quotes": ["error", "single"],
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "prefer-destructuring": "off",
+    "class-methods-use-this": "off",
+    "operator-linebreak": "off",
+    "object-curly-newline": "off",
+    "dot-notation": "off",
+    "no-restricted-globals": "off"
   }
 }
