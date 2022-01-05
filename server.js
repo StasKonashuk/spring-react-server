@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const rootRouter = require('./routes');
 
 const PORT = process.env.PORT || 5000;
@@ -17,6 +18,15 @@ app.use(
 );
 
 app.set('trust proxy', 1);
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { sameSite: 'none' },
+  })
+);
+
 app.use(cookieParser());
 
 app.use('/', rootRouter);
