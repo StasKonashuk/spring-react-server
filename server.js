@@ -18,17 +18,15 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.enable('trust proxy');
 app.use(
   session({
-    name: 'random_session',
-    secret: 'yryGGeugidx34otGDuSF5sD9R8g0Gü3r8',
-    resave: false,
-    saveUninitialized: true,
+    secret: 'somesecret',
+    key: 'sid',
+    proxy: true,
     cookie: {
-      path: '/',
       secure: true,
-      domain: '.herokuapp.com',
-      httpOnly: true,
+      maxAge: 5184000000,
     },
   })
 );
