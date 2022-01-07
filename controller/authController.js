@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const shema = require('../validators/schema');
+const validate = require('../middleware/validate');
 const pool = require('../db');
 const jwtTokens = require('../utils/jwt-helpers');
 
@@ -8,51 +10,13 @@ class AuthController {
     try {
       const { userName, password, repeatPassword, firstName, lastName, age } =
         req.body;
-      const errors = {
-        userNameError: [],
-        passwordError: [],
-        firstNameError: [],
-        lastNameError: [],
-        repeatPasswordError: [],
-        ageError: [],
-      };
 
-      if (userName.length < 3) {
-        errors.userNameError.push('Username must contain 3 symbols or more.');
-      }
-      if (password.length < 4) {
-        errors.passwordError.push('Password must contain 4 symbols or more.');
-      }
-      if (password.search(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/) === -1) {
-        errors.passwordError.push(
-          'Password must contain 1 number and 1 letter.'
-        );
-      }
-      if (firstName.length < 3) {
-        errors.firstNameError.push(
-          'First name must contain 3 symbols or more.'
-        );
-      }
-      if (lastName.length < 3) {
-        errors.lastNameError.push('Last name must contain 3 symbols or more.');
-      }
-      if (repeatPassword !== password) {
-        errors.repeatPasswordError.push('Passwords should be same.');
-      }
-      if (isNaN(age) === true) {
-        errors.ageError.push('Age must be a number.');
-      }
-      if (Number(age) === 0) {
-        errors.ageError.push('Age can’t be a zero.');
-      }
-      if (
-        errors.userNameError.length > 0 ||
-        errors.passwordError.length > 0 ||
-        errors.firstNameError.length > 0 ||
-        errors.repeatPasswordError.length > 0 ||
-        errors.ageError.length > 0
-      ) {
-        return res.status(400).json(errors);
+      const validateResult = validate(
+        { userName, password, repeatPassword, firstName, lastName, age },
+        shema
+      );
+      if (validateResult.error) {
+        return res.status(400).json({ error: validateResult.detail });
       }
       const hashPassword = await bcrypt.hash(password, 8);
       const candidate = await pool.query(
