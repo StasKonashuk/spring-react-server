@@ -20,7 +20,7 @@
     "express-session": "^1.17.2",
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.1"
+    "sequelize": "^6.12.5"
   },
   "devDependencies": {
     "eslint": "^8.5.0",
