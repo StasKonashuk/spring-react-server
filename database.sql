@@ -21,11 +21,11 @@ CREATE TABLE footer_projects(
 );
 
 CREATE TABLE users (
-  userId SERIAL PRIMARY KEY,
-  userName varchar(255) NOT NULL,
+  user_id SERIAL PRIMARY KEY,
+  user_name varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
-  firstName varchar(255) NOT NULL,
-  lastName varchar(255) NOT NULL,
+  first_name varchar(255) NOT NULL,
+  last_name varchar(255) NOT NULL,
 	age int NOT NULL
 );
 
