@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const shema = Joi.object().keys({
+const schema = Joi.object().keys({
   userName: Joi.string().min(3).required().messages({
     'string.min': 'Username must contain 3 symbols or more.',
     'string.empty': 'Username must not be empty.',
@@ -31,4 +31,4 @@ const shema = Joi.object().keys({
   }),
 });
 
-module.exports = shema;
+module.exports = schema;

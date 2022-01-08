@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const shema = require('../validators/schema');
+const schema = require('../validators/schema');
 const validate = require('../middleware/validate');
 const pool = require('../db');
 const jwtTokens = require('../utils/jwt-helpers');
@@ -13,7 +13,7 @@ class AuthController {
 
       const validateResult = validate(
         { userName, password, repeatPassword, firstName, lastName, age },
-        shema
+        schema
       );
       if (validateResult.error) {
         return res.status(400).json({ error: validateResult.detail });
