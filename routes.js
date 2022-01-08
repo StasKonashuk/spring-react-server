@@ -6,13 +6,13 @@ const authController = require('./controller/authController');
 const authentificateToken = require('./middleware/authorizaton');
 
 rootRouter.get(
-  '/api/projects',
+  '/projects',
   authentificateToken,
   projectsController.getProjects
 );
-rootRouter.post('/api/login', authController.login);
-rootRouter.post('/api/registration', authController.registration);
-rootRouter.get('/api/refresh-token', authController.refreshToken);
-rootRouter.delete('/api/refresh-token', authController.deleteRefreshToken);
+rootRouter.post('/login', authController.login);
+rootRouter.post('/registration', authController.registration);
+rootRouter.get('/refresh-token', authController.refreshToken);
+rootRouter.delete('/refresh-token', authController.deleteRefreshToken);
 
 module.exports = rootRouter;
