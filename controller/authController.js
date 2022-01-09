@@ -65,7 +65,7 @@ class AuthController {
 
   refreshToken(req, res) {
     try {
-      const refreshToken = req.cookies.refresh_token;
+      const refreshToken = req.body.token;
 
       if (refreshToken === null) {
         return res.status(401).json({ error: 'Null refresh token' });
