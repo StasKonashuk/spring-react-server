@@ -5,14 +5,10 @@ const FooterProjects = require('../models/FooterProjects');
 class ProjectsController {
   async getProjects(req, res) {
     try {
-      const projectsInfo = {};
       const projects = await Projects.findAll();
       const atticProjects = await AtticProjects.findAll();
       const footerProjects = await FooterProjects.findAll();
-      projectsInfo.projects = projects;
-      projectsInfo.atticProjects = atticProjects;
-      projectsInfo.footerProjects = footerProjects;
-      res.json(projectsInfo);
+      res.status(200).json({ projects, atticProjects, footerProjects });
     } catch {
       res.status(500).send();
     }
