@@ -1,24 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const schema = require('../validators/schema');
-const validate = require('../validators/validate');
 const Users = require('../models/Users');
-const jwtTokens = require('../utils/jwt-helpers');
+const generateTokens = require('../utils/jwt-helpers');
 
 class AuthController {
   async registration(req, res) {
     try {
-      const { userName, password, repeatPassword, firstName, lastName, age } =
-        req.body;
-
-      const validateResult = validate(
-        { userName, password, repeatPassword, firstName, lastName, age },
-        schema
-      );
-
-      if (validateResult.error) {
-        return res.status(400).json({ error: validateResult.detail });
-      }
+      const { userName, password, firstName, lastName, age } = req.body;
 
       const hashPassword = await bcrypt.hash(password, 8);
 
@@ -37,7 +25,7 @@ class AuthController {
 
       res.status(200).json({ message: 'User registered successfully' });
     } catch (error) {
-      res.status(401).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -47,25 +35,28 @@ class AuthController {
 
       const user = await Users.findOne({ where: { user_name: userName } });
       if (!user) {
-        return res.status(401).json({ message: 'Invalid user name' });
+        return res.status(400).json({ message: 'Invalid user name' });
       }
 
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
-        return res.status(401).json({ message: 'Invalid password' });
+        return res.status(400).json({ message: 'Invalid password' });
       }
 
-      const tokens = jwtTokens(user);
-      res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
+      const tokens = generateTokens(user);
+      res.cookie('refresh_token', tokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+      });
       res.status(200).json(tokens);
     } catch (error) {
-      res.status(401).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   refreshToken(req, res) {
     try {
-      const refreshToken = req.body.token;
+      const { token: refreshToken } = req.body;
 
       if (refreshToken === null) {
         return res.status(401).json({ error: 'Null refresh token' });
@@ -76,17 +67,17 @@ class AuthController {
         process.env.JWT_REFRESH_SECRET,
         (error, user) => {
           if (error) {
-            return res.status(403).json({ error: error.message });
+            return res.status(401).json({ error: error.message });
           }
-          const tokens = jwtTokens(user);
+          const tokens = generateTokens(user);
           res.cookie('refresh_token', tokens.refreshToken, {
             httpOnly: true,
           });
-          res.json(tokens);
+          res.status(200).json(tokens);
         }
       );
     } catch (error) {
-      res.status(401).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -95,7 +86,7 @@ class AuthController {
       res.clearCookie('refresh_token');
       return res.status(200).json({ message: 'refresh token deleted.' });
     } catch (error) {
-      res.status(401).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 }
