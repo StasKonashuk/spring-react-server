@@ -72,6 +72,7 @@ class AuthController {
           const tokens = generateTokens(user);
           res.cookie('refresh_token', tokens.refreshToken, {
             httpOnly: true,
+            secure: true,
           });
           res.status(200).json(tokens);
         }
